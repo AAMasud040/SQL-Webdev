@@ -1,0 +1,30 @@
+1) CREATE TABLE IF NOT EXISTS film(
+  	id int,
+    title VARCHAR(30) NOT NULL,
+    description VARCHAR(1000),
+    date DATE DEFAULT '2021-01-01',
+    lang_id int,
+    duration Double,
+    
+    CONSTRAINT film_tab_pk1 PRIMARY KEY(id),
+    CONSTRAINT film_tab_uqk1 UNIQUE KEY(title),
+    CONSTRAINT film_tab_fk1 FOREIGN KEY(lang_id) REFERENCES language( language_id) ON DELETE SET NULL
+);
+
+2) CREATE TABLE IF NOT EXISTS film_actor(
+	actor_id int,
+    film_id int,
+    last_update DATETIME,
+    
+    CONSTRAINT film_actor_tab_pk1 PRIMARY KEY(actor_id,film_id),
+    CONSTRAINT film_actor_tab_fk1 FOREIGN KEY(actor_id) REFERENCES actor(actor_id),
+    CONSTRAINT film_actor_tab_fk2 FOREIGN KEY(film_id) REFERENCES film(id)
+);
+
+3)ALTER TABLE film_category
+ADD CONSTRAINT filem_category_tab_fk1 FOREIGN KEY(film_id) REFERENCES film(id)
+4)
+INSERT INTO language VALUES(1,'Bengali','2021-03-10'),(2,'English','2021-02-11');
+
+INSERT INTO film VALUES(1,'Avengers','Superhero movie','2018-05-07',2,2.5),
+(2,'Pather Panchali','Life story','1955-01-01',1,2.00);

@@ -1,0 +1,80 @@
+1) CREATE DATABASE IF NOT EXISTS e_computer
+
+2) CREATE TABLE IF NOT EXISTS PC(
+    id VARCHAR(5),
+    model_name VARCHAR(30) NOT NULL,
+    release_date DATE,
+    country_of_origin VARCHAR(40) DEFAULT 'Bangladesh',
+    warranty LONGTEXT,
+    
+    CONSTRAINT pc_table_uqk_1 UNIQUE(release_date),
+    CONSTRAINT pc_table_pk_1 PRIMARY KEY(id)
+    );
+
+DemoData:
+	INSERT INTO pc VALUES('00001','Cougar Minos X2','2017-01-01','Taiwan','1 Year'),
+			     ('00002','LogitechK120','2017-08-03','China','3 Year');
+
+3) CREATE TABLE IF NOT EXISTS category(
+    id INT,
+    name VARCHAR(100) NOT NULL,
+    
+    CONSTRAINT category_table_pk1 PRIMARY KEY(id),
+    CONSTRAINT category_table_uqk1 UNIQUE(name)
+    );
+
+DemoData:
+	INSERT INTO category VALUES(1,'Keyboard'),(2,'Mouse');
+
+4) CREATE TABLE IF NOT EXISTS component(
+	id VARCHAR(10),
+    name VARCHAR(30),
+    category int,
+    configuration VARCHAR(300),
+    price DOUBLE(10,2) NOT NULL,
+    
+    CONSTRAINT component_table_pk1 PRIMARY KEY(id),
+    CONSTRAINT Fk2 FOREIGN KEY(category) REFERENCES category(id)
+    );
+
+DemoData:
+	INSERT INTO component VALUES('0000000001','Keyboard-keys',1,'Comfy Keys',5.00),('0000000002','Mouse-buttons',2,'20 Million Clicks',12.50);
+
+5) CREATE TABLE IF NOT EXISTS parts(
+	id INT,
+    type VARCHAR(20) NOT NULL,
+    
+    CONSTRAINT parts_table_pk1 PRIMARY KEY(id),
+    CONSTRAINT parts_table_uqk1 UNIQUE KEY(type)
+    );
+
+manddatafor_parts:
+	INSERT INTO parts VALUES(1,'Optional'),(2,'Mandatory');
+
+
+
+
+ CREATE TABLE IF NOT EXISTS pc_parts(
+    	pc_id VARCHAR(5),
+    	comp_id VARCHAR(10),
+    	part_type VARCHAR(20) NOT NULL,
+    
+    	CONSTRAINT pc_parts_pk1 PRIMARY KEY(pc_id,comp_id),
+    	CONSTRAINT pc_parts_fk1 FOREIGN KEY(pc_id) REFERENCES pc(id),
+    	CONSTRAINT pc_parts_fk2 FOREIGN KEY(comp_id) REFERENCES component(id),
+    	CONSTRAINT pc_parts_fk3 FOREIGN KEY(part_type) REFERENCES parts(type)
+    );
+
+DemoData:
+
+	INSERT INTO pc_parts VALUES('00001','0000000001','Mandatory'),('00002','0000000002','Optional')
+
+
+6) ALTER TABLE category ADD COLUMN short_cat VARCHAR(200)
+   ALTER TABLE category ADD CONSTRAINT category_table_uqk2 UNIQUE KEY(short_cat)
+
+
+7) ALTER TABLE component ADD CONSTRAINT component_table_uqk1 UNIQUE KEY(name)
+
+/*insert into pc_parts VALUES('00003','0000000003','unnecessary') test case 3*/
+
